@@ -4,25 +4,29 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.july.R
-import com.example.july.data.network.FirebaseAuthentication
-import com.google.firebase.auth.FirebaseAuth
+import com.example.july.domain.repositories.AuthRepository
+import com.example.july.ui.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class Splash : Fragment(R.layout.fragment_splash) {
 
-    private val firebaseAuthentication : FirebaseAuthentication by lazy {
-        FirebaseAuthentication(FirebaseAuth.getInstance())
-    }
+    private val profileViewModel : ProfileViewModel by viewModels()
+    @Inject lateinit var authRepository : AuthRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Toast.makeText(requireContext(), "Logging in...", Toast.LENGTH_SHORT).show()
 
-        firebaseAuthentication.signInAsAnonymous(
-            onSuccess = {
+        authRepository.signInAsAnonymous(
+            onSuccess = { uid ->
                 Toast.makeText(requireContext(), "Logged in", Toast.LENGTH_SHORT).show()
+                profileViewModel.insertUserInDB(uid)
                 findNavController().navigate(SplashDirections.actionSplashToChat())
             },
 
