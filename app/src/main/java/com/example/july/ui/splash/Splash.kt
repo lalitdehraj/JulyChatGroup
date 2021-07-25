@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.july.R
@@ -15,7 +16,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class Splash : Fragment(R.layout.fragment_splash) {
 
-    private val profileViewModel : ProfileViewModel by viewModels()
+    private val profileViewModel : ProfileViewModel by activityViewModels()
     @Inject lateinit var authRepository : AuthRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

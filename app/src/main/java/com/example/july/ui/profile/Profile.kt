@@ -3,6 +3,7 @@ package com.example.july.ui.profile
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.july.R
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class Profile : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding : FragmentProfileBinding
-    private val viewModel : ProfileViewModel by viewModels()
+    private val viewModel : ProfileViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,6 +24,13 @@ class Profile : Fragment(R.layout.fragment_profile) {
 
         binding.editProfile.setOnClickListener {
             findNavController().navigate(ProfileDirections.actionProfile2ToEditProfile())
+        }
+
+        viewModel.profile.observe(viewLifecycleOwner) { profile ->
+            if (profile != null){
+                binding.name.text = profile.name
+                binding.bio.text = profile.bio
+            }
         }
     }
 }

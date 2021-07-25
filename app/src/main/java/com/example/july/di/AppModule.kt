@@ -5,8 +5,10 @@ import androidx.room.Room
 import com.example.july.data.DataSource
 import com.example.july.data.db.ChatDatabase
 import com.example.july.domain.repositories.AuthRepository
+import com.example.july.domain.repositories.ChatRepository
 import com.example.july.domain.repositories.ProfileRepository
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
@@ -30,7 +32,8 @@ class AppModule {
     @Provides
     fun provideDataSource(chatDatabase: ChatDatabase) : DataSource {
         val firebaseAuth = Firebase.auth
-        return DataSource(firebaseAuth, chatDatabase)
+        val firebaseDB = Firebase.database
+        return DataSource(firebaseAuth, firebaseDB, chatDatabase)
     }
 
     @Provides
@@ -40,6 +43,11 @@ class AppModule {
 
     @Provides
     fun provideProfileRepository(dataSource : DataSource) : ProfileRepository {
+        return dataSource
+    }
+
+    @Provides
+    fun provideChatRepository(dataSource : DataSource) : ChatRepository {
         return dataSource
     }
 

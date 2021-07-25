@@ -15,5 +15,4 @@ data class ProfileEntity(
 
     @ColumnInfo(name = "bio")
     val bio : String,
-
 )
