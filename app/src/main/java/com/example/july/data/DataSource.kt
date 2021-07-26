@@ -48,6 +48,7 @@ class DataSource(
                             senderName = response.value["senderName"]!!,
                             message = response.value["message"]!!,
                             timestamp = response.value["timestamp"]!!,
+                            uid = response.value["uid"]!!
                         )
 
                     currentChatList.add(chat)

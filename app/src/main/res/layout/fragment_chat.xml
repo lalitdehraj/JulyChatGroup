@@ -31,7 +31,10 @@
             app:layout_constraintBottom_toTopOf="@id/compose_message_layout"
             android:id="@+id/chats"
             android:layout_marginTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:background="#dedede"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:clipToPadding="false"/>
 
         <include
             layout="@layout/layout_compose_message"

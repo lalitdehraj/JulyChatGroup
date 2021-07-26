@@ -1,6 +1,5 @@
 package com.example.july.ui
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,13 +19,18 @@ class ChatViewModel @Inject constructor(
 
     init {
         chatRepository.fetchChatsFromFirebase(
-            onSuccess = {
-                        _chats.value = it
+            onSuccess = { unsortedChats ->
+                _chats.value = sortedChats(unsortedChats)
             },
             onFailure = {
 
             }
         )
+    }
+
+    private fun sortedChats(unsortedChats: List<Chat>): List<Chat>? {
+        if (unsortedChats.isNullOrEmpty()) return ArrayList<Chat>()
+        return unsortedChats.sortedWith(compareBy { it.timestamp })
     }
 
     fun sendChatToDatabase(chatmsg : Chat){
