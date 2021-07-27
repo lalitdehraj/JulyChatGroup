@@ -7,9 +7,7 @@ import com.example.july.domain.model.Chat
 import com.example.july.domain.repositories.AuthRepository
 import com.example.july.domain.repositories.ChatRepository
 import com.example.july.domain.repositories.ProfileRepository
-import com.example.july.utils.PUBLIC_GROUP_NAME
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 
@@ -33,8 +31,8 @@ class DataSource(
         }
     }
 
-    override fun fetchChatsFromFirebase(onSuccess: (List<Chat>) -> Unit, onFailure: () -> Unit) {
-        val groupChatRef = firebaseDatabase.getReference(PUBLIC_GROUP_NAME)
+    override fun fetchChatsFromFirebase(group: String, onSuccess: (List<Chat>) -> Unit, onFailure: () -> Unit) {
+        val groupChatRef = firebaseDatabase.getReference(group)
 
         groupChatRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -62,8 +60,8 @@ class DataSource(
         })
     }
 
-    override fun sendChatToFirebase(chatMessage: Chat) {
-        val groupChatRef = firebaseDatabase.getReference(PUBLIC_GROUP_NAME).push()
+    override fun sendChatToFirebase(chatMessage: Chat,group: String) {
+        val groupChatRef = firebaseDatabase.getReference(group).push()
         groupChatRef.setValue(chatMessage)
     }
 

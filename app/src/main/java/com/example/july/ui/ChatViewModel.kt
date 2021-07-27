@@ -14,18 +14,17 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _chats = MutableLiveData<List<Chat>>()
-    val chats : LiveData<List<Chat>>
+    val chats: LiveData<List<Chat>>
         get() = _chats
-
+    //private lateinit var group: String
+    private val _group = MutableLiveData<String>()
+    val group : LiveData<String>
+    get()= _group
     init {
-        chatRepository.fetchChatsFromFirebase(
-            onSuccess = { unsortedChats ->
-                _chats.value = sortedChats(unsortedChats)
-            },
-            onFailure = {
+        //if (!group.isNullOrBlank())
+//            group="D"
 
-            }
-        )
+
     }
 
     private fun sortedChats(unsortedChats: List<Chat>): List<Chat>? {
@@ -33,7 +32,19 @@ class ChatViewModel @Inject constructor(
         return unsortedChats.sortedWith(compareBy { it.timestamp })
     }
 
-    fun sendChatToDatabase(chatmsg : Chat){
-        chatRepository.sendChatToFirebase(chatmsg)
+    fun sendChatToDatabase(chatmsg: Chat) {
+        chatRepository.sendChatToFirebase(chatmsg, group.value.toString())
+    }
+
+    fun setGroup(group: String) {
+        this._group.value = group
+        chatRepository.fetchChatsFromFirebase(this.group.value.toString(),
+            onSuccess = { unsortedChats ->
+                _chats.value = sortedChats(unsortedChats)
+            },
+            onFailure = {
+
+            }
+        )
     }
 }

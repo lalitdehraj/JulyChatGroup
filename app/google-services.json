@@ -1,41 +1,34 @@
 {
   "project_info": {
-    "project_number": "117753578341",
-    "project_id": "july-chat-1fa12",
-    "storage_bucket": "july-chat-1fa12.appspot.com"
+    "project_number": "376066508398",
+    "firebase_url": "https://july-chat-81232-default-rtdb.firebaseio.com",
+    "project_id": "july-chat-81232",
+    "storage_bucket": "july-chat-81232.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:117753578341:android:6a9c8fdf5fc3ed0b79978c",
+        "mobilesdk_app_id": "1:376066508398:android:a173d6c09c33ffb040487f",
         "android_client_info": {
           "package_name": "com.example.july"
         }
       },
       "oauth_client": [
         {
-          "client_id": "117753578341-39mbknondo738u9grrcae4au6rq24mgk.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.july",
-            "certificate_hash": "34b919662f172d54b5d98341c904d2cbd1dcd7c9"
-          }
-        },
-        {
-          "client_id": "117753578341-bve19nkai719e4b9dp17mh92vlidfepf.apps.googleusercontent.com",
+          "client_id": "376066508398-lec3g1v5crhqm7ei858jp5ojgtfjah0l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBrUMyVEBdeScahrt8NwfbzE7aPfiCXbbU"
+          "current_key": "AIzaSyCmn8U02KUlRt7FXEtkWdWa8lkNk4YbteI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "117753578341-bve19nkai719e4b9dp17mh92vlidfepf.apps.googleusercontent.com",
+              "client_id": "376066508398-lec3g1v5crhqm7ei858jp5ojgtfjah0l.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

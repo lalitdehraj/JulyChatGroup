@@ -11,8 +11,8 @@
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
-            android:id="@+id/action_splash_to_chat"
-            app:destination="@id/chat"
+            android:id="@+id/action_splash_to_group"
+            app:destination="@id/group"
             app:popUpTo="@id/splash"
             app:popUpToInclusive="true" />
     </fragment>
@@ -43,5 +43,14 @@
             app:destination="@id/profile"
             app:popUpTo="@id/profile"
             app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/group"
+        android:name="com.example.july.ui.group.Group"
+        android:label="fragment_group"
+        tools:layout="@layout/fragment_group" >
+        <action
+            android:id="@+id/action_group_to_chat"
+            app:destination="@id/chat" />
     </fragment>
 </navigation>
