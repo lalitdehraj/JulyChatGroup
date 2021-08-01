@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.july.R
+import com.example.july.data.db.entity.ChatMessageEntity
 import com.example.july.databinding.FragmentChatBinding
 import com.example.july.domain.model.Chat
 import com.example.july.ui.ChatViewModel
@@ -55,15 +56,30 @@ class Chat : Fragment(R.layout.fragment_chat){
         binding.composeMessageLayout.chatSend.setOnClickListener {
             val msg = binding.composeMessageLayout.chatMessage.text.toString()
             if (msg.isNotBlank()){
+                val sender= profileViewModel.profile.value!!.name
+                val timeStamp= "${System.currentTimeMillis()}"
+                val uId= profileViewModel.profile.value!!.id
+
                 val chatMsg = Chat(
                     message = msg,
-                    senderName = profileViewModel.profile.value!!.name,
-                    timestamp = "${System.currentTimeMillis()}",
-                    uid = profileViewModel.profile.value!!.id
+                    senderName = sender,
+                    timestamp = timeStamp,
+                    uid = uId
                 )
+                val chatMessageEntity= group?.let { it1 ->
+                    ChatMessageEntity(
+                        it1,sender,msg,timeStamp, uId
+                    )
+                }
 
-                chatViewModel.sendChatToDatabase(chatMsg)
+
+                if (chatMessageEntity != null) {
+                    chatViewModel.sendChatToDatabase(chatMessageEntity)
+                }
+                chatViewModel.sendChatToFirebase(chatMsg)
                 binding.composeMessageLayout.chatMessage.setText("")
+
+
             }
         }
 
