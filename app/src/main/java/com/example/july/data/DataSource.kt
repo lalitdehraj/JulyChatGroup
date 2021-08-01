@@ -2,10 +2,12 @@ package com.example.july.data
 
 import androidx.lifecycle.LiveData
 import com.example.july.data.db.ChatDatabase
+import com.example.july.data.db.entity.GroupEntity
 import com.example.july.data.db.entity.ProfileEntity
 import com.example.july.domain.model.Chat
 import com.example.july.domain.repositories.AuthRepository
 import com.example.july.domain.repositories.ChatRepository
+import com.example.july.domain.repositories.GroupRepository
 import com.example.july.domain.repositories.ProfileRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
@@ -15,7 +17,7 @@ class DataSource(
     private val firebaseAuth: FirebaseAuth,
     private val firebaseDatabase: FirebaseDatabase,
     private val chatDatabase: ChatDatabase
-) : AuthRepository, ChatRepository, ProfileRepository {
+) : AuthRepository, ChatRepository, ProfileRepository,GroupRepository {
 
     override fun signInAsAnonymous(onSuccess: (String) -> Unit, onFailure: () -> Unit) {
         firebaseAuth.signInAnonymously().addOnCompleteListener { task ->
@@ -79,5 +81,14 @@ class DataSource(
         chatDatabase.runInTransaction {
             chatDatabase.profileDao().updateProfileEntity(profile)
         }
+    }
+
+    override fun fetchGroupsFromDatabase(): LiveData<List<GroupEntity>> {
+        return chatDatabase.groupDao().getGroupEntity()
+    }
+
+    override fun insertGroupIntoDatabse(groupEntity: GroupEntity) {
+
+        chatDatabase.groupDao().insertGroupEntity(groupEntity)
     }
 }
