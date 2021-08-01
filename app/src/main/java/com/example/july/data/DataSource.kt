@@ -2,6 +2,7 @@ package com.example.july.data
 
 import androidx.lifecycle.LiveData
 import com.example.july.data.db.ChatDatabase
+import com.example.july.data.db.entity.ChatMessageEntity
 import com.example.july.data.db.entity.GroupEntity
 import com.example.july.data.db.entity.ProfileEntity
 import com.example.july.domain.model.Chat
@@ -65,6 +66,10 @@ class DataSource(
     override fun sendChatToFirebase(chatMessage: Chat,group: String) {
         val groupChatRef = firebaseDatabase.getReference(group).push()
         groupChatRef.setValue(chatMessage)
+    }
+
+    override fun sendChatToDatabase(chatMessageEntity: ChatMessageEntity) {
+        chatDatabase.chatMessageDao().insertChatMessage(chatMessageEntity)
     }
 
     override fun insertProfileInDB(profile: ProfileEntity) {

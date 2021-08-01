@@ -3,9 +3,14 @@ package com.example.july.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.july.data.db.entity.ChatMessageEntity
 import com.example.july.domain.model.Chat
 import com.example.july.domain.repositories.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,24 +21,29 @@ class ChatViewModel @Inject constructor(
     private val _chats = MutableLiveData<List<Chat>>()
     val chats: LiveData<List<Chat>>
         get() = _chats
-    //private lateinit var group: String
+
     private val _group = MutableLiveData<String>()
-    val group : LiveData<String>
-    get()= _group
-    init {
-        //if (!group.isNullOrBlank())
-//            group="D"
+    val group: LiveData<String>
+        get() = _group
 
 
-    }
 
     private fun sortedChats(unsortedChats: List<Chat>): List<Chat>? {
         if (unsortedChats.isNullOrEmpty()) return ArrayList<Chat>()
         return unsortedChats.sortedWith(compareBy { it.timestamp })
     }
 
-    fun sendChatToDatabase(chatmsg: Chat) {
-        chatRepository.sendChatToFirebase(chatmsg, group.value.toString())
+    fun sendChatToDatabase( chatMessageEntity: ChatMessageEntity) {
+
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                chatRepository.sendChatToDatabase(chatMessageEntity)
+            }
+        }
+    }
+
+    fun sendChatToFirebase(chatmsg: Chat){
+        chatRepository.sendChatToFirebase(chatmsg,group.value.toString())
     }
 
     fun setGroup(group: String) {
