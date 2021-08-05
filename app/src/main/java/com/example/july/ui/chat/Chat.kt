@@ -10,11 +10,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.july.R
 import com.example.july.data.db.entity.ChatMessageEntity
+import com.example.july.data.db.entity.PasswordEntity
 import com.example.july.databinding.FragmentChatBinding
+import com.example.july.databinding.FragmentCreateBinding
+import com.example.july.databinding.FragmentPasswordBinding
 import com.example.july.domain.model.Chat
 import com.example.july.ui.ChatViewModel
 import com.example.july.ui.ProfileViewModel
 import com.example.july.utils.PUBLIC_GROUP_KEY
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,6 +29,7 @@ class Chat : Fragment(R.layout.fragment_chat){
     private val chatViewModel : ChatViewModel by viewModels()
     private val profileViewModel : ProfileViewModel by activityViewModels()
     private var group: String?= null
+    private var isLocked= false
 
     private lateinit var chatAdapter : ChatAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,9 +44,9 @@ class Chat : Fragment(R.layout.fragment_chat){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding = FragmentChatBinding.bind(view)
 
+        setUpLock()
 
         binding.gotoProfile.setOnClickListener {
             findNavController().navigate(ChatDirections.actionChatToProfile2())
@@ -89,6 +94,35 @@ class Chat : Fragment(R.layout.fragment_chat){
             }
         }
 
+        binding.gotoLock.setOnClickListener(){
+            val dialog = BottomSheetDialog(requireContext())
+            val view = layoutInflater.inflate(R.layout.fragment_password, null)
+            val bindo = FragmentPasswordBinding.bind(view)
+
+            bindo.submitPassword.setOnClickListener(){
+                val passwordEntity= PasswordEntity(group!!,bindo.getPassword.text.toString(),true)
+                chatViewModel.setPassword(passwordEntity)
+            }
+            dialog.setContentView(view)
+            dialog.show()
+        }
+
+    }
+
+    private fun setUpLock() {
+        isLocked = chatViewModel.isLocked(group!!)
+        if (!isLocked) {
+            val dialog = BottomSheetDialog(requireContext())
+            val view = layoutInflater.inflate(R.layout.fragment_password, null)
+            val bindo = FragmentPasswordBinding.bind(view)
+            dialog.setContentView(view)
+            dialog.show()
+            bindo.submitPassword.setOnClickListener() {
+                if (chatViewModel.isMatch(group!!, bindo.getPassword.text.toString()))
+                    dialog.dismiss()
+            }
+
+        }
     }
 
     private fun initAdapter(id: String) {

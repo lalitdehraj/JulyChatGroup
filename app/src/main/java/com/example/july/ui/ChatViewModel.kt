@@ -1,10 +1,12 @@
 package com.example.july.ui
 
+import android.text.BoringLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.july.data.db.entity.ChatMessageEntity
+import com.example.july.data.db.entity.PasswordEntity
 import com.example.july.domain.model.Chat
 import com.example.july.domain.repositories.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,5 +58,24 @@ class ChatViewModel @Inject constructor(
 
             }
         )
+    }
+    fun setPassword(passwordEntity: PasswordEntity){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+        chatRepository.setPassword(passwordEntity)}}
+    }
+    fun isLocked(group: String):Boolean{
+        val isLocked= false
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+        chatRepository.isLocked(group)}}
+        return isLocked
+    }
+    fun isMatch(groupName:String,password:String):Boolean{
+        val isMatch=false
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+        chatRepository.isMatch(groupName,password)}}
+        return isMatch
     }
 }

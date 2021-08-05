@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.july.data.db.ChatDatabase
 import com.example.july.data.db.entity.ChatMessageEntity
 import com.example.july.data.db.entity.GroupEntity
+import com.example.july.data.db.entity.PasswordEntity
 import com.example.july.data.db.entity.ProfileEntity
 import com.example.july.domain.model.Chat
 import com.example.july.domain.repositories.AuthRepository
@@ -70,6 +71,21 @@ class DataSource(
 
     override fun sendChatToDatabase(chatMessageEntity: ChatMessageEntity) {
         chatDatabase.chatMessageDao().insertChatMessage(chatMessageEntity)
+    }
+
+    override fun isLocked(group: String): Boolean {
+        return chatDatabase.passwordDao().isPasswordSet(group)
+    }
+
+    override fun isMatch(group: String, password: String): Boolean {
+        val passwordSetted= chatDatabase.passwordDao().isPasswordMatch(group)
+        if(passwordSetted.equals(password))
+            return true
+        return false
+    }
+
+    override fun setPassword(passwordEntity: PasswordEntity) {
+        chatDatabase.passwordDao().insertPassword(passwordEntity)
     }
 
     override fun insertProfileInDB(profile: ProfileEntity) {
